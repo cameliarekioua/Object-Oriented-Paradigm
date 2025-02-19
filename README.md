@@ -1,2 +1,2 @@
 # Introduction to Object-Oriented Paradigm
- Introduction to Object-Oriented Paradigm in Java
+My courses in JAVA at Télécom Paris.
