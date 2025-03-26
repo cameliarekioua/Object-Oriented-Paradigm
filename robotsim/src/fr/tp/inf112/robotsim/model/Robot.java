@@ -1,4 +1,4 @@
-package robotsim;
+package fr.tp.inf112.robotsim.model;
 
 public class Robot {
 	
@@ -15,5 +15,16 @@ public class Robot {
 	public String toString() {
 		return "My name is " + name + " and I move at " + speed + " km/h.";
 	}
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+	
+	public double getSpeed() {
+		// TODO Auto-generated method stub
+		return speed;
+	}
+
 
 }

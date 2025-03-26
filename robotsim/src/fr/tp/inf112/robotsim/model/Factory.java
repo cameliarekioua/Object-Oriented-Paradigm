@@ -1,4 +1,4 @@
-package robotsim;
+package fr.tp.inf112.robotsim.model;
 
 import java.util.ArrayList;
 
