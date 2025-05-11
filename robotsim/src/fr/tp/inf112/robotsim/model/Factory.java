@@ -1,56 +1,55 @@
 package fr.tp.inf112.robotsim.model;
 
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Factory {
-	
-	private String name; 
-	private ArrayList<Robot> robots;
 
-	public Factory(String name, ArrayList<Robot> robots) {
-		super();
-		this.name = name;
-		this.robots = robots;
-	}
+    private String name;
+    private List<Component> components;
 
-	public boolean addRobot(String name) {
-	   
-	    for (Robot r : robots) {
-	        if (r.getName().equals(name)) {
-	            return false;
-	        }
-	    }
-	    
-	    Robot newRobot = new Robot(name, 0.0);
-	    robots.add(newRobot);
-	    return true;
-	}
-	
-	
-	private boolean checkRobotName(String name) {
-	    for (Robot r : robots) {
-	        if (r.getName().equals(name)) { 
-	            return false;
-	        }
-	    }
-	    return true; 
-	}
-	
-	public void printToConsole() {
-	    System.out.println("Name of the factory: " + name);
-	    System.out.println("List of its robots:");
+    public Factory(String name) {
+        this.name = name;
+        this.components = new ArrayList<>();
+    }
 
-	    if (robots.isEmpty()) {
-	        System.out.println("No robots in the factory.");
-	    } else {
-	        for (Robot r : robots) {
-	            System.out.println("Name: " + r.getName() + " (Speed: " + r.getSpeed() + ")");
-	        }
-	    }
-	}
+    public boolean addComponent(Component c) {
+        for (Component existing : components) {
+            if (existing.getName().equalsIgnoreCase(c.getName())) {
+                return false; // Nom déjà utilisé
+            }
+        }
+        components.add(c);
+        return true;
+    }
 
+    public boolean checkComponentName(String name) {
+        return components.stream().noneMatch(c -> c.getName().equalsIgnoreCase(name));
+    }
 
+    public void printToConsole() {
+        System.out.println("Nom de l’usine : " + name);
+        System.out.println("Liste des composants de l’usine :");
 
-	
+        if (components.isEmpty()) {
+            System.out.println("Aucun composant enregistré.");
+        } else {
+            for (Component c : components) {
+                System.out.println("- " + c);
+            }
+        }
+    }
+
+    public List<Component> getComponents() {
+        return new ArrayList<>(components); // Protection contre modification externe
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
-

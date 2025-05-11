@@ -1,12 +1,12 @@
 package fr.tp.inf112.robotsim.model;
 
-public class Robot {
+public class Robot extends Component {
 	
 	private String name;
 	private double speed;
 	
 	public Robot(String name, double speed) {
-		super();
+		super(name, position, height, height);
 		this.name = name;
 		this.speed = speed;
 	}
