@@ -1,55 +1,80 @@
 package fr.tp.inf112.robotsim.model;
 
+import fr.tp.inf112.projects.canvas.model.Canvas;
+import fr.tp.inf112.projects.canvas.model.Figure;
+import fr.tp.inf112.projects.canvas.controller.Observable;
+import fr.tp.inf112.projects.canvas.model.Observer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
-public class Factory {
+/**
+ * Modèle de l'usine, observable et persistant.
+ */
+public class Factory extends Component implements Canvas, Observable, Serializable {
+    private List<Component> components = new ArrayList<>();
+    private transient List<Observer> observers = new ArrayList<>();
+    private transient boolean simulationRunning = false;
 
-    private String name;
-    private List<Component> components;
-
-    public Factory(String name) {
-        this.name = name;
-        this.components = new ArrayList<>();
+    public Factory(String name, int width, int height) {
+        super(name, new Position(0,0), width, height);
     }
 
     public boolean addComponent(Component c) {
-        for (Component existing : components) {
-            if (existing.getName().equalsIgnoreCase(c.getName())) {
-                return false; // Nom déjà utilisé
-            }
+        for (Component e : components) {
+            if (e.getName().equalsIgnoreCase(c.getName())) return false;
         }
+        c.setFactory(this);
         components.add(c);
         return true;
     }
 
-    public boolean checkComponentName(String name) {
-        return components.stream().noneMatch(c -> c.getName().equalsIgnoreCase(name));
+    @Override
+    public void behave() {
+        for (Component c : components) {
+            c.behave();
+        }
     }
 
-    public void printToConsole() {
-        System.out.println("Nom de l’usine : " + name);
-        System.out.println("Liste des composants de l’usine :");
-
-        if (components.isEmpty()) {
-            System.out.println("Aucun composant enregistré.");
-        } else {
-            for (Component c : components) {
-                System.out.println("- " + c);
+    public void startSimulation() {
+        simulationRunning = true;
+        while (simulationRunning) {
+            behave();
+            notifyObservers();
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public List<Component> getComponents() {
-        return new ArrayList<>(components); // Protection contre modification externe
+    public void stopSimulation() {
+        simulationRunning = false;
     }
 
-    public String getName() {
-        return name;
+    public boolean isSimulationRunning() {
+        return simulationRunning;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    public void notifyObservers() {
+        for (Observer o : observers) {
+            o.modelChanged();
+        }
+    }
+
+    @Override
+    public Collection<Figure> getFigures() {
+        return (Collection<Figure>)(Collection<?>) components;
     }
 }
