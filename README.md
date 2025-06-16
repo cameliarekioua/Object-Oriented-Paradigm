@@ -27,9 +27,9 @@ The project was developed incrementally through a series of lab sessions (TPs) a
 	•	Clean class organization, proper naming, consistent formatting, and helpful comments.
 	•	MVC architecture respected as taught in the course.
 
-❌ What is not included
+What is not included
 
-The project intentionally omits advanced topics, which will be covered in later courses:
+The project intentionally omits advanced topics :
 	•	Concurrency or multithreading.
 	•	Distributed systems.
 	•	Database integration.
